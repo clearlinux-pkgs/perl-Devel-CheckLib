@@ -4,16 +4,15 @@
 #
 Name     : perl-Devel-CheckLib
 Version  : 1.13
-Release  : 1
+Release  : 2
 URL      : https://cpan.metacpan.org/authors/id/M/MA/MATTN/Devel-CheckLib-1.13.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/M/MA/MATTN/Devel-CheckLib-1.13.tar.gz
 Summary  : 'check that a library is available'
 Group    : Development/Tools
 License  : Artistic-1.0-Perl
-Requires: perl-Devel-CheckLib-bin
-Requires: perl-Devel-CheckLib-man
-Requires: perl(IO::CaptureOutput)
-Requires: perl(Mock::Config)
+Requires: perl-Devel-CheckLib-bin = %{version}-%{release}
+Requires: perl-Devel-CheckLib-man = %{version}-%{release}
+BuildRequires : buildreq-cpan
 BuildRequires : perl(IO::CaptureOutput)
 BuildRequires : perl(Mock::Config)
 
@@ -25,10 +24,20 @@ link against it.
 %package bin
 Summary: bin components for the perl-Devel-CheckLib package.
 Group: Binaries
-Requires: perl-Devel-CheckLib-man
+Requires: perl-Devel-CheckLib-man = %{version}-%{release}
 
 %description bin
 bin components for the perl-Devel-CheckLib package.
+
+
+%package dev
+Summary: dev components for the perl-Devel-CheckLib package.
+Group: Development
+Requires: perl-Devel-CheckLib-bin = %{version}-%{release}
+Provides: perl-Devel-CheckLib-devel = %{version}-%{release}
+
+%description dev
+dev components for the perl-Devel-CheckLib package.
 
 
 %package man
@@ -65,9 +74,9 @@ make TEST_VERBOSE=1 test
 %install
 rm -rf %{buildroot}
 if test -f Makefile.PL; then
-make pure_install PERL_INSTALL_ROOT=%{buildroot}
+make pure_install PERL_INSTALL_ROOT=%{buildroot} INSTALLDIRS=vendor
 else
-./Build install --installdirs=site --destdir=%{buildroot}
+./Build install --installdirs=vendor --destdir=%{buildroot}
 fi
 find %{buildroot} -type f -name .packlist -exec rm -f {} ';'
 find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null ';'
@@ -76,13 +85,16 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files
 %defattr(-,root,root,-)
-/usr/lib/perl5/site_perl/5.26.1/Devel/CheckLib.pm
+/usr/lib/perl5/vendor_perl/5.26.1/Devel/CheckLib.pm
 
 %files bin
 %defattr(-,root,root,-)
 /usr/bin/use-devel-checklib
 
-%files man
+%files dev
 %defattr(-,root,root,-)
-/usr/share/man/man1/use-devel-checklib.1
 /usr/share/man/man3/Devel::CheckLib.3
+
+%files man
+%defattr(0644,root,root,0755)
+/usr/share/man/man1/use-devel-checklib.1
