@@ -4,7 +4,7 @@
 #
 Name     : perl-Devel-CheckLib
 Version  : 1.13
-Release  : 2
+Release  : 3
 URL      : https://cpan.metacpan.org/authors/id/M/MA/MATTN/Devel-CheckLib-1.13.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/M/MA/MATTN/Devel-CheckLib-1.13.tar.gz
 Summary  : 'check that a library is available'
