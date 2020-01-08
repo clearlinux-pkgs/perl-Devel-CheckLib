@@ -4,16 +4,18 @@
 #
 Name     : perl-Devel-CheckLib
 Version  : 1.14
-Release  : 11
+Release  : 12
 URL      : https://cpan.metacpan.org/authors/id/M/MA/MATTN/Devel-CheckLib-1.14.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/M/MA/MATTN/Devel-CheckLib-1.14.tar.gz
-Summary  : Module to check if other perl modules are installed
+Summary  : 'check that a library is available'
 Group    : Development/Tools
 License  : Artistic-1.0-Perl
 Requires: perl-Devel-CheckLib-bin = %{version}-%{release}
 Requires: perl-Devel-CheckLib-man = %{version}-%{release}
+Requires: perl-Devel-CheckLib-perl = %{version}-%{release}
 BuildRequires : buildreq-cpan
 BuildRequires : perl(Capture::Tiny)
+BuildRequires : perl(IO::CaptureOutput)
 BuildRequires : perl(Mock::Config)
 
 %description
@@ -35,7 +37,6 @@ Group: Development
 Requires: perl-Devel-CheckLib-bin = %{version}-%{release}
 Provides: perl-Devel-CheckLib-devel = %{version}-%{release}
 Requires: perl-Devel-CheckLib = %{version}-%{release}
-Requires: perl-Devel-CheckLib = %{version}-%{release}
 
 %description dev
 dev components for the perl-Devel-CheckLib package.
@@ -49,8 +50,18 @@ Group: Default
 man components for the perl-Devel-CheckLib package.
 
 
+%package perl
+Summary: perl components for the perl-Devel-CheckLib package.
+Group: Default
+Requires: perl-Devel-CheckLib = %{version}-%{release}
+
+%description perl
+perl components for the perl-Devel-CheckLib package.
+
+
 %prep
 %setup -q -n Devel-CheckLib-1.14
+cd %{_builddir}/Devel-CheckLib-1.14
 
 %build
 export http_proxy=http://127.0.0.1:9/
@@ -86,7 +97,6 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files
 %defattr(-,root,root,-)
-/usr/lib/perl5/vendor_perl/5.28.2/Devel/CheckLib.pm
 
 %files bin
 %defattr(-,root,root,-)
@@ -99,3 +109,7 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 %files man
 %defattr(0644,root,root,0755)
 /usr/share/man/man1/use-devel-checklib.1
+
+%files perl
+%defattr(-,root,root,-)
+/usr/lib/perl5/vendor_perl/5.30.1/Devel/CheckLib.pm
